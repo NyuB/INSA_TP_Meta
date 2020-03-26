@@ -60,6 +60,28 @@ public class Schedule {
         return max;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("\n");
+        sb.append("| |");
+        for(int i=0;i<pb.numTasks;i++){
+            sb.append(i);
+            sb.append("|");
+        }
+        sb.append("\n");
+        for(int j = 0;j<pb.numJobs;j++){
+            sb.append("|");
+            sb.append(j);
+            sb.append("|");
+            for(int i=0;i<pb.numTasks;i++){
+                sb.append(times[j][i]);
+                sb.append("|");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
     public Schedule copy() {
         return new Schedule(this.pb, this.times);
     }

@@ -17,12 +17,15 @@ public class DebuggingMain {
             // Note : cette solution a aussi été vue dans les exercices (section 3.3)
             //        mais on commençait à compter à 1 ce qui donnait [1 2 2 1 1 2]
             JobNumbers enc = new JobNumbers(instance);
-            enc.jobs[enc.nextToSet++] = 0;
-            enc.jobs[enc.nextToSet++] = 1;
-            enc.jobs[enc.nextToSet++] = 1;
-            enc.jobs[enc.nextToSet++] = 0;
-            enc.jobs[enc.nextToSet++] = 0;
-            enc.jobs[enc.nextToSet++] = 1;
+            enc.jobs[enc.nextToSet++] = 0;//Job 0 [0] = t0,3 => t0 (0, 3)
+            enc.jobs[enc.nextToSet++] = 1;//Job 1 [0] = t1,2 => t1 (0, 2)
+            enc.jobs[enc.nextToSet++] = 1;//Job 1 [1] = t0,2 => t0 (3, 5)
+            enc.jobs[enc.nextToSet++] = 0;//Job 0 [1] = t1,3 => t1 (3, 6)
+            enc.jobs[enc.nextToSet++] = 0;//Job 0 [2] = t2, 2 => t2 (6, 8)
+            enc.jobs[enc.nextToSet++] = 1;//Job 1 [2] = t2, 4 => t2 (8, 12)
+            //Soit j0 et j1 commencent en 0, j0 finit en 8, j1 en 12
+            //t0 et t1 commencent en 0 et finissent en 5 et 6
+            //t2 commence en 6 et finit en 12
 
             System.out.println("\nENCODING: " + enc);
 
