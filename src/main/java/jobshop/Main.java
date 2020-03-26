@@ -9,6 +9,7 @@ import java.util.List;
 
 
 import jobshop.solvers.BasicSolver;
+import jobshop.solvers.GreedySolver;
 import jobshop.solvers.RandomSolver;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -24,6 +25,8 @@ public class Main {
         solvers = new HashMap<>();
         solvers.put("basic", new BasicSolver());
         solvers.put("random", new RandomSolver());
+        solvers.put("spt", new GreedySolver(GreedySolver.Mode.SPT));
+        solvers.put("lpt", new GreedySolver(GreedySolver.Mode.LPT));
         // add new solvers here
     }
 

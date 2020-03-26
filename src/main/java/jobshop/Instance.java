@@ -1,5 +1,7 @@
 package jobshop;
 
+import jobshop.encodings.Task;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +25,9 @@ public class Instance {
 
     public int duration(int job, int task) {
         return durations[job][task];
+    }
+    public int duration(Task task){
+        return this.duration(task.job, task.task);
     }
     public int machine(int job, int task) {
         return machines[job][task];

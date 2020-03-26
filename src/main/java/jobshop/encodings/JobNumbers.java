@@ -9,6 +9,25 @@ import java.util.Arrays;
 /** Représentation par numéro de job. */
 public class JobNumbers extends Encoding {
 
+    public static JobNumbers fromSchedule(Schedule schedule){
+        JobNumbers res = new JobNumbers(schedule.pb);
+        int[] tasks = new int[res.instance.numJobs];
+
+        for (int i = 0; i < res.instance.numMachines * res.instance.numJobs;i++){
+            int t_min = Integer.MAX_VALUE;
+            int next=0;
+            for(int j=0;j<res.instance.numJobs;j++){
+                if(tasks[j] < res.instance.numTasks && schedule.startTime(j,tasks[j])<t_min){
+                    t_min = schedule.startTime(j,tasks[j]);
+                    next = j;
+                }
+            }
+            res.jobs[res.nextToSet++] = next;
+            tasks[next]++;
+        }
+        return res;
+    }
+
     /** A numJobs * numTasks array containing the representation by job numbers. */
     public final int[] jobs;
 
@@ -18,7 +37,6 @@ public class JobNumbers extends Encoding {
 
     public JobNumbers(Instance instance) {
         super(instance);
-
         jobs = new int[instance.numJobs * instance.numMachines];
         Arrays.fill(jobs, -1);
     }
@@ -49,6 +67,7 @@ public class JobNumbers extends Encoding {
 
         return new Schedule(instance, startTimes);
     }
+
 
     @Override
     public String toString() {
