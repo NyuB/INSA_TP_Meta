@@ -1,7 +1,15 @@
-# Heuristic methods for JobShop scheduling
 
-This repository contains the starter code for the assignment.
+# Heuristic methods for JobShop scheduling (template here : https://github.com/insa-4ir-meta-heuristiques/template-jobshop )
 
+Initialized from the lesson template
+
+Implemented Solvers (by default, Random and Basic solvers were available):
+
+- Greedy SPT
+- Greedy LPT
+- Exhaustive (only working on very small instances)
+- Genetic with ResourceNumber representation (not efficient)
+- Genetic with JobNumbers representation and seeding with spt/lpt (better results, still work in progress)
 
 ## Compile
 
