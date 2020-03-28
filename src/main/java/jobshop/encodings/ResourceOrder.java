@@ -4,23 +4,31 @@ import jobshop.Encoding;
 import jobshop.Instance;
 import jobshop.Schedule;
 
+import java.util.ArrayList;
+
 public class ResourceOrder extends Encoding {
 
 	public static ResourceOrder fromSchedule(Schedule schedule){
 		ResourceOrder res = new ResourceOrder(schedule.pb);
-		int[] tasks = new int[res.instance.numJobs];
+		ArrayList<Task> taskQ = new ArrayList<>();
+		for(int j=0;j<res.instance.numJobs;j++){
+			taskQ.add(new Task(j, 0));
+		}
 		for (int i = 0; i < res.instance.numMachines * res.instance.numJobs;i++) {
-			int t_min = Integer.MAX_VALUE;
-			int next=0;
-			for(int j=0;j<res.instance.numJobs;j++){
-				if(tasks[j] < res.instance.numTasks && schedule.startTime(j,tasks[j])<t_min){
-					t_min = schedule.startTime(j,tasks[j]);
-					next = j;
+			Task next = taskQ.get(0);
+			int t_min = schedule.startTime(next);
+			for(Task item : taskQ){
+				if(schedule.startTime(item)<t_min){
+					t_min = schedule.startTime(item);
+					next = item;
 				}
 			}
-			int mID = res.instance.machine(next,tasks[next]);
-			res.insertTask(new Task(next, tasks[next]), mID);
-			tasks[next]++;
+			taskQ.remove(next);
+			int mID = res.instance.machine(next);
+			res.insertTask(next, mID);
+			if(next.task<res.instance.numTasks-1){
+				taskQ.add(new Task(next.job,next.task+1));
+			}
 		}
 		return res;
 	}
@@ -39,7 +47,11 @@ public class ResourceOrder extends Encoding {
 		}
 		this.order[machine][t] = task;
 	}
-
+	public void swap(int j1,int j2,int m){
+		Task aux = this.order[m][j1];
+		this.order[m][j1]=this.order[m][j2];
+		this.order[m][j2]=aux;
+	}
 	@Override
 	public Schedule toSchedule() {
 		int[] machinesTime = new int[instance.numMachines];
@@ -101,5 +113,16 @@ public class ResourceOrder extends Encoding {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public ResourceOrder clone() {
+		ResourceOrder res = new ResourceOrder(this.instance);
+		for(int m=0;m<this.instance.numMachines;m++){
+			for(int j=0;j<this.instance.numJobs;j++){
+				res.order[m][j]=this.order[m][j];
+			}
+		}
+		return res;
 	}
 }

@@ -9,8 +9,11 @@ import java.util.List;
 
 
 import jobshop.solvers.BasicSolver;
+import jobshop.solvers.ExhaustSolver;
 import jobshop.solvers.GreedySolver;
 import jobshop.solvers.RandomSolver;
+import jobshop.solvers.genetic.GeneticSolverJobs;
+import jobshop.solvers.genetic.GeneticSolverResource;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
@@ -23,10 +26,13 @@ public class Main {
     private static HashMap<String, Solver> solvers;
     static {
         solvers = new HashMap<>();
+        solvers.put("exhaust", new ExhaustSolver());
         solvers.put("basic", new BasicSolver());
         solvers.put("random", new RandomSolver());
         solvers.put("spt", new GreedySolver(GreedySolver.Mode.SPT));
         solvers.put("lpt", new GreedySolver(GreedySolver.Mode.LPT));
+        solvers.put("geneticR",new GeneticSolverResource(0.5,100));
+        solvers.put("geneticJ", new GeneticSolverJobs(0.5,50));
         // add new solvers here
     }
 

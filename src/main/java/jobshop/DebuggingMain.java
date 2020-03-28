@@ -4,6 +4,9 @@ import jobshop.encodings.JobNumbers;
 import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Task;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -13,7 +16,6 @@ public class DebuggingMain {
         try {
             // load the aaa1 instance
             Instance instance = Instance.fromFile(Paths.get("instances/aaa1"));
-
             // construit une solution dans la représentation par
             // numéro de jobs : [0 1 1 0 0 1]
             // Note : cette solution a aussi été vue dans les exercices (section 3.3)

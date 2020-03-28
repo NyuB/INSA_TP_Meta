@@ -1,0 +1,1 @@
+java -jar build/libs/JSP.jar --timeout 3 --instance swv01 swv02 swv03 ta50 ta51 ta52 yn1 yn2 --solver basic spt geneticJ

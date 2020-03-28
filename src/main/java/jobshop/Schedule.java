@@ -1,6 +1,8 @@
 package jobshop;
 
 
+import jobshop.encodings.Task;
+
 import java.util.Arrays;
 
 public class Schedule {
@@ -19,6 +21,9 @@ public class Schedule {
 
     public int startTime(int job, int task) {
         return times[job][task];
+    }
+    public int startTime(Task task){
+        return this.startTime(task.job, task.task);
     }
 
     /** Returns true if this schedule is valid (no constraint is violated) */

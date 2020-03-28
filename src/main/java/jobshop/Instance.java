@@ -1,15 +1,19 @@
 package jobshop;
 
+import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Task;
+import jobshop.solvers.genetic.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class Instance {
+public class Instance  {
 
     /** Number of jobs in the instance */
     public final int numJobs;
@@ -31,6 +35,12 @@ public class Instance {
     }
     public int machine(int job, int task) {
         return machines[job][task];
+    }
+    public int machine(Task task) {
+        return this.machine(task.job, task.task);
+    }
+    public int totalOps(){
+        return this.numTasks * this.numJobs;
     }
 
     /** among the tasks of the given job, returns the task index that uses the given machine. */
@@ -72,4 +82,6 @@ public class Instance {
 
         return pb;
     }
+
+
 }

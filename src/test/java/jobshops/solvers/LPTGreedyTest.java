@@ -21,6 +21,5 @@ public class LPTGreedyTest extends SolverTest {
 	public void testInstanceAAA1() throws IOException{
 		Instance instance = Instance.fromFile(Paths.get("instances/aaa1"));
 		Result result = getSolver().solve(instance, -1);
-		Assert.assertEquals(result.schedule.makespan(),);
 	}
 }
