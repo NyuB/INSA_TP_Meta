@@ -1,6 +1,6 @@
 package jobshop;
 
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -12,6 +12,7 @@ import jobshop.solvers.BasicSolver;
 import jobshop.solvers.ExhaustSolver;
 import jobshop.solvers.GreedySolver;
 import jobshop.solvers.RandomSolver;
+import jobshop.solvers.genetic.GeneticSolver;
 import jobshop.solvers.genetic.GeneticSolverJobs;
 import jobshop.solvers.genetic.GeneticSolverResource;
 import net.sourceforge.argparse4j.ArgumentParsers;
@@ -32,12 +33,12 @@ public class Main {
         solvers.put("spt", new GreedySolver(GreedySolver.Mode.SPT));
         solvers.put("lpt", new GreedySolver(GreedySolver.Mode.LPT));
         solvers.put("geneticR",new GeneticSolverResource(0.5,100));
-        solvers.put("geneticJ", new GeneticSolverJobs(0.5,50));
+        solvers.put("geneticJ", new GeneticSolverJobs(0.5,50,0.33));
         // add new solvers here
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ArgumentParser parser = ArgumentParsers.newFor("jsp-solver").build()
                 .defaultHelp(true)
                 .description("Solves jobshop problems.");
@@ -56,6 +57,10 @@ public class Main {
                 .required(true)
                 .help("Instance(s) to solve (space separated if more than one)");
 
+        parser.addArgument("--genparams")
+                .nargs("+")
+                .required(false)
+                .help("Parameters for genetic algorithms, format name=value, space separated if more than one");
         Namespace ns = null;
         try {
             ns = parser.parseArgs(args);
@@ -64,6 +69,7 @@ public class Main {
             System.exit(1);
         }
 
+        BufferedWriter reportWriter = new BufferedWriter(new FileWriter(new File("./report.txt")));
         PrintStream output = System.out;
 
         long solveTimeMs = ns.getLong("timeout") * 1000;
@@ -85,6 +91,8 @@ public class Main {
                 System.exit(1);
             }
         }
+        List<String> genParameters = ns.getList("genparams");
+        ((GeneticSolver) (solvers.get("geneticJ"))).argsSetup(genParameters);
 
         float[] runtimes = new float[solversToTest.size()];
         float[] distances = new float[solversToTest.size()];
@@ -131,6 +139,7 @@ public class Main {
 
                 output.printf("%7d %8s %5.1f        ", runtime, makespan, dist);
                 output.flush();
+                reportWriter.write(instanceName+" "+solverName+" "+makespan+"\n"+result.schedule.toString()+"\n--------------------------\n");
             }
             output.println();
 
@@ -141,6 +150,7 @@ public class Main {
         for(int solverId = 0 ; solverId < solversToTest.size() ; solverId++) {
             output.printf("%7.1f %8s %5.1f        ", runtimes[solverId], "-", distances[solverId]);
         }
+        reportWriter.flush();
 
 
 

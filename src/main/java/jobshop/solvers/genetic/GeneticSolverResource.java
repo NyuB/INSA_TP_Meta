@@ -1,24 +1,16 @@
 package jobshop.solvers.genetic;
 
-import jobshop.Instance;
-import jobshop.Result;
 import jobshop.Schedule;
-import jobshop.Solver;
-import jobshop.encodings.JobNumbers;
 import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Task;
-import jobshop.solvers.BasicSolver;
-import jobshop.solvers.GreedySolver;
-
 import java.util.ArrayList;
 import java.util.Random;
 
-import static jobshop.solvers.GreedySolver.Mode.SPT;
 
 public class GeneticSolverResource extends GeneticSolver<ResourceOrder>  {
 
 	public GeneticSolverResource(double proba, int batchsize) {
-		super(proba, batchsize);
+		super(proba, batchsize,0);
 	}
 	@Override
 	public ResourceOrder cross(ResourceOrder individual, ResourceOrder other) {
@@ -37,7 +29,7 @@ public class GeneticSolverResource extends GeneticSolver<ResourceOrder>  {
 	}
 
 	@Override
-	public int evaluate(ResourceOrder individual, int reference) {
+	public int evaluate(ResourceOrder individual) {
 		Schedule schedule = individual.toSchedule();
 		int val = schedule.makespan();
 		return (schedule.isValid()) ? -val : -10 * val;

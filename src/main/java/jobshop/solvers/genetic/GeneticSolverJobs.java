@@ -15,8 +15,8 @@ public class GeneticSolverJobs extends GeneticSolver<JobNumbers>{
 	private JobNumbers spt;
 	private JobNumbers lpt;
 
-	public GeneticSolverJobs(double proba, int batchsize) {
-		super(proba, batchsize);
+	public GeneticSolverJobs(double proba, int batchsize,double seedingProportion) {
+		super(proba, batchsize,seedingProportion);
 
 	}
 
@@ -49,7 +49,7 @@ public class GeneticSolverJobs extends GeneticSolver<JobNumbers>{
 	}
 
 	@Override
-	public int evaluate(JobNumbers individual, int reference) {
+	public int evaluate(JobNumbers individual) {
 		return -individual.toSchedule().makespan();
 	}
 
@@ -67,7 +67,7 @@ public class GeneticSolverJobs extends GeneticSolver<JobNumbers>{
 	@Override
 	public JobNumbers generate() {
 
-		if(random.nextDouble()<=0.33){//Seeding 1/3 of the population
+		if(random.nextDouble()<=seedingProportion){//Seeding
 			return (random.nextDouble()<=0.5)?spt:lpt;
 		}
 		else {//Generating randomly
