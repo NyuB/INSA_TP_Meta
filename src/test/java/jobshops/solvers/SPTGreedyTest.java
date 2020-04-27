@@ -1,11 +1,11 @@
 package jobshops.solvers;
 
-import jobshop.Solver;
-import jobshop.solvers.GreedySolver;
+import jobshop.solvers.greedy.GreedySolver;
+import jobshop.solvers.greedy.Mode;
 
 public class SPTGreedyTest extends SolverTest {
 	@Override
 	public GreedySolver getSolver() {
-		return new GreedySolver(GreedySolver.Mode.SPT);
+		return new GreedySolver(Mode.SPT);
 	}
 }

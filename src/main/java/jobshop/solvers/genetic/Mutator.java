@@ -1,5 +1,8 @@
 package jobshop.solvers.genetic;
 
 public interface Mutator<I> {
-	I mutate(I individual,double proba);
+
+	void setMutationRate(double mutationRate);
+
+	I mutate(I individual);
 }

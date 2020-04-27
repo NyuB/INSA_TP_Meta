@@ -6,7 +6,11 @@ import jobshop.Result;
 import jobshop.Solver;
 import java.util.List;
 
-public abstract class GeneticSolver<I extends Encoding> extends GeneticAlgorithm<I> implements Solver, Evaluator<I>, Mutator<I>, Populator<I>, Validator<I>, Crosser<I> {
+/**
+ * Must provide default implementation of Genetic Algorithm components : if acomponent if not set(using the set[COmponetnName] method, this default implementation will be used
+ * @param <I>
+ */
+public abstract class GeneticSolver<I extends Encoding> extends GeneticAlgorithm<I> implements Solver, Evaluator<I>, Mutator<I>, Populator<I>, Validator<I>, Crosser<I> , Selector<I>{
 	protected Instance instance;
 	protected double mutationRate;
 	protected int populationSize;
@@ -52,6 +56,7 @@ public abstract class GeneticSolver<I extends Encoding> extends GeneticAlgorithm
 		this.evaluator = this.getEvaluator();
 		this.populator = this.getPopulator();
 		this.validator = this.getValidator();
+		this.selector = this.getSelector();
 		return new Result(instance, this.compute(populationSize, mutationRate, deadline).toSchedule(), Result.ExitCause.Timeout);
 	}
 
@@ -59,41 +64,23 @@ public abstract class GeneticSolver<I extends Encoding> extends GeneticAlgorithm
 		return (evaluator != null) ? evaluator : this;
 	}
 
-	public void setEvaluator(Evaluator<I> evaluator) {
-		this.evaluator = evaluator;
-	}
-
 	public Mutator<I> getMutator() {
 		return (mutator != null) ? mutator : this;
-	}
-
-	public void setMutator(Mutator<I> mutator) {
-		this.mutator = mutator;
 	}
 
 	public Populator<I> getPopulator() {
 		return (populator != null) ? populator : this;
 	}
 
-	public void setPopulator(Populator<I> populator) {
-		this.populator = populator;
-	}
-
 	public Validator<I> getValidator() {
 		return (validator != null) ? validator : this;
-	}
-
-	public void setValidator(Validator<I> validator) {
-		this.validator = validator;
 	}
 
 	public Crosser<I> getCrosser() {
 		return (crosser != null) ? crosser : this;
 	}
 
-	public void setCrosser(Crosser<I> crosser) {
-		this.crosser = crosser;
-	}
+	public Selector<I> getSelector(){return (selector != null) ? selector:this;}
 
 	public double getMutationRate() {
 		return mutationRate;

@@ -6,6 +6,8 @@ import jobshop.Schedule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Représentation par numéro de job.
@@ -34,6 +36,13 @@ public class JobNumbers extends Encoding {
 			}
 		}
 		return res;
+	}
+
+	public static boolean same(JobNumbers a, JobNumbers b){
+		for(int i=0;i<a.jobs.length;i++){
+			if(a.jobs[i]!=b.jobs[i])return false;
+		}
+		return true;
 	}
 
 	/**
@@ -109,4 +118,63 @@ public class JobNumbers extends Encoding {
 		res.jobs[res.nextToSet++] = jobInc;
 		return res;
 	}
+
+	public static JobNumbers generateRandom(Instance instance,Random random){
+		ArrayList<Task> todo = new ArrayList<>();
+		JobNumbers individual = new JobNumbers(instance);
+		for (int j = 0; j < instance.numJobs; j++) {
+			todo.add(new Task(j, 0));
+		}
+		while (todo.size() > 0) {
+			int index = random.nextInt(todo.size());
+			Task task = todo.remove(index);
+			individual.jobs[individual.nextToSet++] = task.job;
+			if (task.task < instance.numTasks - 1) {
+				todo.add(new Task(task.job, task.task + 1));
+			}
+
+		}
+		return individual;
+	}
+
+	public String toIdentifier(){
+		StringBuilder sb = new StringBuilder();
+		for(int j:this.jobs){
+			sb.append(j);
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * For "explorer type" solvers(gradient,taboo...)
+	 * @return A list corresponding to all possible exchange between two jobs in the representation
+	 */
+	public List<JobNumbers> generateAllSwaps(){
+		ArrayList<JobNumbers> res = new ArrayList<>();
+		for(int a=0;a<this.instance.totalOps()-1;a++){
+			for(int b=a+1;b<instance.totalOps();b++){
+				if(this.jobs[a]!=this.jobs[b]) {
+					JobNumbers clone = this.clone();
+					clone.jobs[a] = this.jobs[b];
+					clone.jobs[b] = this.jobs[a];
+					res.add(clone);
+				}
+			}
+		}
+		return res;
+	}
+
+
+	//TODO to optimize exhaustive search
+	public int currentMakespan(){
+		int res=0;
+		int[] tasks = new int[instance.numJobs];
+		for(int i=0;i<nextToSet;i++){
+			res+=instance.duration(jobs[i],tasks[jobs[i]]);
+			tasks[jobs[i]]++;
+		}
+		return res;
+	}
+
+
 }

@@ -2,19 +2,17 @@ package jobshops.solvers;
 
 import jobshop.Instance;
 import jobshop.Result;
-import jobshop.Solver;
-import jobshop.solvers.GreedySolver;
-import org.junit.Assert;
+import jobshop.solvers.greedy.GreedySolver;
+import jobshop.solvers.greedy.Mode;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class LPTGreedyTest extends SolverTest {
 	@Override
 	public GreedySolver getSolver() {
-		return new GreedySolver(GreedySolver.Mode.LPT);
+		return new GreedySolver(Mode.LPT);
 	}
 
 	@Test
