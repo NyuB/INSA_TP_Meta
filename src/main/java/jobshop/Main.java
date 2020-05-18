@@ -32,6 +32,13 @@ public class Main {
         solvers.put("random", new RandomSolver());
         solvers.put("spt", new GreedySolver(Mode.SPT));
         solvers.put("lpt", new GreedySolver(Mode.LPT));
+        solvers.put("lrpt", new GreedySolver(Mode.LRPT));
+        solvers.put("srpt", new GreedySolver(Mode.SRPT));
+        solvers.put("est_lpt", new GreedySolver(Mode.EST_LPT));
+        solvers.put("est_spt", new GreedySolver(Mode.EST_SPT));
+        solvers.put("est_lrpt", new GreedySolver(Mode.EST_LRPT));
+        solvers.put("est_srpt", new GreedySolver(Mode.EST_SRPT));
+
         solvers.put("rspt", new RandomizedGreedySolver(Mode.SPT));
         solvers.put("rlpt", new RandomizedGreedySolver(Mode.LPT));
 

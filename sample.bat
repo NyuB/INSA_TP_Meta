@@ -1,3 +1,3 @@
 ::java -jar build/libs/JSP.jar --timeout 1 --solver lpt spt geneticJ --genparams mr=0.5 ps=50 sr=0.33 --instance swv01 swv02 swv03 ta50 ta51 ta52 yn1 yn2
 ::java -jar build/libs/JSP.jar --timeout 10 --solver spt geneticJ --genparams mr=0.5 sr=0.33 ps=50 --instance ta51
-java -jar build/libs/JSP.jar --timeout 1 --solver spt lpt geneticJ --genparams mr=0.5 sr=0.75 ps=50 --instance ta51
+java -jar build/libs/JSP.jar --timeout 1 --solver est_srpt est_lrpt rspt rlpt --genparams mr=0.5 sr=0.75 ps=50 --instance la01 la02 la03 la04 la05 la06 la07 la08 la09 la10 la11 la12 la13 la14 la15 la16 la17 la18 la19 la20 la21 la22 la23 la24 la25 la26 la27 la28 la29 la30 la31 la32 la33 la34 la35 la36 la37 la38 la39 la40

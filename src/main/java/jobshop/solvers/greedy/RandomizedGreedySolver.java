@@ -9,6 +9,9 @@ import jobshop.encodings.Task;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This solver is by default in EST mode. It chooses the next task randomly, each task having a different probability of election based on its duration.
+ */
 public class RandomizedGreedySolver implements Solver {
 	private Mode mode;
 	public RandomizedGreedySolver(Mode mode) {
@@ -29,8 +32,8 @@ public class RandomizedGreedySolver implements Solver {
 			while (taskQ.size() > 0) {
 				int totalHeuristic = 0;
 				int t_min = Integer.max(jobsTime[taskQ.get(0).job], machinesTime[instance.machine(taskQ.get(0))]);
-				ArrayList<Task> candidates = new ArrayList<>();
-				ArrayList<Integer> chances = new ArrayList<>();
+				ArrayList<Task> candidates = new ArrayList<>();//All tasks available to start at the same earliest time
+				ArrayList<Integer> chances = new ArrayList<>();//The intervall assigned to each available task
 				for (int i = 0; i < taskQ.size(); i++) {
 					Task item = taskQ.get(i);
 					int t = Integer.max(jobsTime[item.job], machinesTime[instance.machine(item)]);
@@ -66,7 +69,7 @@ public class RandomizedGreedySolver implements Solver {
 						break;
 					}
 				}
-				if(next==null){
+				if(next==null){//pick the last candidate
 					index = candidates.size()-1;
 					next = candidates.get(index);
 				}

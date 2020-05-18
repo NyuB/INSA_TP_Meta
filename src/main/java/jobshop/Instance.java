@@ -83,5 +83,13 @@ public class Instance  {
         return pb;
     }
 
+    public int durationFromTask(Task task){
+        int res = 0;
+        for(int i=task.task;i<this.numTasks;i++){
+            res+=this.duration(task.job,i);
+        }
+        return res;
+    }
+
 
 }

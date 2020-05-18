@@ -8,6 +8,8 @@ import jobshop.encodings.Task;
 
 import java.util.ArrayList;
 
+
+
 public class GreedySolver implements Solver {
 	private Mode mode;
 	public GreedySolver(Mode mode) {
@@ -15,10 +17,19 @@ public class GreedySolver implements Solver {
 	}
 
 	public boolean priority(Task better, Task worse, Instance instance) {
-		if (this.mode == Mode.SPT) {
+		if (this.mode == Mode.SPT || this.mode == Mode.EST_SPT) {
 			return instance.duration(better) < instance.duration(worse);
-		} else {
+		} else if(this.mode == Mode.LPT ||this.mode == Mode.EST_LPT){
 			return instance.duration(better) > instance.duration(worse);
+		} else if(this.mode == Mode.LRPT || this.mode == Mode.EST_LRPT){
+			return instance.durationFromTask(better)>instance.durationFromTask(worse);
+		}
+		else if(this.mode == Mode.SRPT || this.mode == Mode.EST_SRPT){
+			return instance.durationFromTask(better)<instance.durationFromTask(worse);
+		}
+		else{
+			System.out.println("This should not happen ma friend");
+			return true;
 		}
 	}
 
@@ -38,7 +49,7 @@ public class GreedySolver implements Solver {
 			for (int i = 1; i < taskQ.size(); i++) {
 				Task item = taskQ.get(i);
 				int t = Integer.max(jobsTime[item.job], machinesTime[instance.machine(item)]);
-				if (t == t_min) {
+				if (t == t_min || (this.mode !=Mode.EST_SPT && this.mode!=Mode.EST_LPT && this.mode != Mode.EST_SRPT && this.mode != Mode.EST_LRPT)) {//When not in EST mode, starting time does not matter
 					if (this.priority(item, next, instance)) {
 						next = item;
 						index = i;
@@ -55,11 +66,14 @@ public class GreedySolver implements Solver {
 			t_min += instance.duration(next);
 			machinesTime[instance.machine(next)] = t_min;
 			jobsTime[next.job] = t_min;
-			taskQ.sort((o1, o2) -> {//Sort the tasklist by earliest possible start time
-				int t1 = Integer.max(jobsTime[o1.job], machinesTime[instance.machine(o1)]);
-				int t2 = Integer.max(jobsTime[o2.job], machinesTime[instance.machine(o2)]);
-				return t1 - t2;
-			});
+
+			if (this.mode == Mode.EST_SPT ||this.mode == Mode.EST_LPT || this.mode == Mode.EST_SRPT ||this.mode == Mode.EST_LRPT) {//When in EST mode, sort the next tasks by starting time
+				taskQ.sort((o1, o2) -> {//Sort the tasklist by earliest possible start time
+					int t1 = Integer.max(jobsTime[o1.job], machinesTime[instance.machine(o1)]);
+					int t2 = Integer.max(jobsTime[o2.job], machinesTime[instance.machine(o2)]);
+					return t1 - t2;
+				});
+			}
 		}
 		return new Result(instance, resourceOrder.toSchedule(), Result.ExitCause.Blocked);
 	}

@@ -25,8 +25,8 @@ public class GeneticSolverJobs extends GeneticSolver<JobNumbers> {
 	@Override
 	public Result solve(Instance instance, long deadline) {
 		seeds = new ArrayList<>();
-		seeds.add(JobNumbers.fromSchedule(new GreedySolver(Mode.SPT).solve(instance, 0).schedule));
-		seeds.add(JobNumbers.fromSchedule(new GreedySolver(Mode.LPT).solve(instance, 0).schedule));
+		seeds.add(JobNumbers.fromSchedule(new GreedySolver(Mode.EST_SRPT).solve(instance, 0).schedule));
+		seeds.add(JobNumbers.fromSchedule(new GreedySolver(Mode.EST_LRPT).solve(instance, 0).schedule));
 		long available = (deadline-System.currentTimeMillis())/100;
 		long start = System.currentTimeMillis();
 		for(int i = 1;i<=3;i++){
