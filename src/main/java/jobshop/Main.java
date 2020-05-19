@@ -9,12 +9,14 @@ import java.util.List;
 
 
 import jobshop.solvers.*;
+import jobshop.solvers.descent.DescentSolver;
+import jobshop.solvers.descent.TabooSolver;
 import jobshop.solvers.genetic.GeneticSolver;
 import jobshop.solvers.genetic.GeneticSolverJobs;
 import jobshop.solvers.greedy.GreedySolver;
-import jobshop.solvers.greedy.Mode;
+import jobshop.solvers.Mode;
 import jobshop.solvers.greedy.RandomizedGreedySolver;
-import jobshop.solvers.taboo.TabooSolver;
+import jobshop.utils.Logger;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
@@ -27,23 +29,34 @@ public class Main {
     private static HashMap<String, Solver> solvers;
     static {
         solvers = new HashMap<>();
-        solvers.put("exhaust", new ExhaustSolver());
+
         solvers.put("basic", new BasicSolver());
         solvers.put("random", new RandomSolver());
+
+        solvers.put("exhaust", new ExhaustSolver());
+
         solvers.put("spt", new GreedySolver(Mode.SPT));
         solvers.put("lpt", new GreedySolver(Mode.LPT));
+
         solvers.put("lrpt", new GreedySolver(Mode.LRPT));
         solvers.put("srpt", new GreedySolver(Mode.SRPT));
+
         solvers.put("est_lpt", new GreedySolver(Mode.EST_LPT));
         solvers.put("est_spt", new GreedySolver(Mode.EST_SPT));
+
         solvers.put("est_lrpt", new GreedySolver(Mode.EST_LRPT));
         solvers.put("est_srpt", new GreedySolver(Mode.EST_SRPT));
 
         solvers.put("rspt", new RandomizedGreedySolver(Mode.SPT));
         solvers.put("rlpt", new RandomizedGreedySolver(Mode.LPT));
 
+        solvers.put("grad", new DescentSolver(false));
+        solvers.put("taboo", new TabooSolver(false,10));
+        solvers.put("r_grad", new DescentSolver(true));
+        solvers.put("r_taboo", new TabooSolver(true,10));
+
+
         solvers.put("geneticJ", new GeneticSolverJobs(0.5,50,0.33));
-        solvers.put("taboo", new TabooSolver());
         // add new solvers here
     }
 
@@ -102,7 +115,9 @@ public class Main {
             }
         }
         List<String> genParameters = ns.getList("genparams");
-        ((GeneticSolver) (solvers.get("geneticJ"))).argsSetup(genParameters);
+        if(solversToTest.contains(solvers.get("geneticJ"))) {
+            ((GeneticSolver) (solvers.get("geneticJ"))).argsSetup(genParameters);
+        }
 
         float[] runtimes = new float[solversToTest.size()];
         float[] distances = new float[solversToTest.size()];
@@ -133,6 +148,8 @@ public class Main {
                 Solver solver = solvers.get(solverName);
                 long start = System.currentTimeMillis();
                 long deadline = System.currentTimeMillis() + solveTimeMs;
+                Logger.logln("------"+instanceName+"------");
+                Logger.logln("------"+solverName+"------");
                 Result result = solver.solve(instance, deadline);
                 long runtime = System.currentTimeMillis() - start;
 

@@ -3,8 +3,9 @@ package jobshop.solvers.genetic;
 import jobshop.Instance;
 import jobshop.Result;
 import jobshop.encodings.JobNumbers;
+import jobshop.solvers.descent.TabooSolver;
 import jobshop.solvers.greedy.GreedySolver;
-import jobshop.solvers.greedy.Mode;
+import jobshop.solvers.Mode;
 import jobshop.solvers.greedy.RandomizedGreedySolver;
 
 import java.util.ArrayList;
@@ -30,10 +31,10 @@ public class GeneticSolverJobs extends GeneticSolver<JobNumbers> {
 		long available = (deadline-System.currentTimeMillis())/100;
 		long start = System.currentTimeMillis();
 		for(int i = 1;i<=3;i++){
-			seeds.add(JobNumbers.fromSchedule(new RandomizedGreedySolver(Mode.SPT).solve(instance, start+i*5*available).schedule));
+			seeds.add(JobNumbers.fromSchedule(new TabooSolver(true,30).solve(instance, start+i*5*available).schedule));
 		}
 		for(int i = 4;i<=6;i++){
-			seeds.add(JobNumbers.fromSchedule(new RandomizedGreedySolver(Mode.LPT).solve(instance, start+i*5*available).schedule));
+			seeds.add(JobNumbers.fromSchedule(new TabooSolver(true,30).solve(instance, start+i*5*available).schedule));
 		}
 		return super.solve(instance, deadline);
 	}

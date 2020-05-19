@@ -1,0 +1,1 @@
+java -jar build/libs/JSP.jar --timeout 120 --solver r_taboo geneticJ --genparams mr=0.5 sr=0.75 ps=50 --instance swv06

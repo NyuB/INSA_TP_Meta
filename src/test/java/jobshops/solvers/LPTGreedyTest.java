@@ -3,7 +3,7 @@ package jobshops.solvers;
 import jobshop.Instance;
 import jobshop.Result;
 import jobshop.solvers.greedy.GreedySolver;
-import jobshop.solvers.greedy.Mode;
+import jobshop.solvers.Mode;
 import org.junit.Test;
 
 import java.io.IOException;

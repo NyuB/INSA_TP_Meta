@@ -47,6 +47,7 @@ public class ResourceOrder extends Encoding {
 		}
 		this.order[machine][t] = task;
 	}
+
 	public void swap(int j1,int j2,int m){
 		Task aux = this.order[m][j1];
 		this.order[m][j1]=this.order[m][j2];
@@ -81,7 +82,15 @@ public class ResourceOrder extends Encoding {
 				mID++;
 			}
 		}
-		return new Schedule(instance, startTimes);
+		Schedule schedule = new Schedule(instance, startTimes);
+		return (schedule.isValid() ? schedule : null);
+	}
+	public int indexOn(Task task,int machine){
+		for(int i=0;i<this.instance.numJobs;i++){
+			Task aux = this.getOrder()[machine][i];
+			if(aux.job==task.job && aux.task == task.task)return i;
+		}
+		throw new NullPointerException("This task does not belong to this machine");
 	}
 
 	public Task[][] getOrder() {
@@ -113,6 +122,10 @@ public class ResourceOrder extends Encoding {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+
+	public ResourceOrder copy(){
+		return ResourceOrder.fromSchedule(this.toSchedule());
 	}
 
 	@Override

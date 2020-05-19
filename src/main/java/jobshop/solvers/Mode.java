@@ -1,4 +1,4 @@
-package jobshop.solvers.greedy;
+package jobshop.solvers;
 
 public enum Mode {
 	SPT,
@@ -8,5 +8,5 @@ public enum Mode {
 	EST_SPT,
 	EST_LPT,
 	EST_SRPT,
-	EST_LRPT
+	EST_LRPT,
 }

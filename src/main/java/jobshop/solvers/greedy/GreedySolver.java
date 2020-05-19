@@ -5,6 +5,7 @@ import jobshop.Result;
 import jobshop.Solver;
 import jobshop.encodings.ResourceOrder;
 import jobshop.encodings.Task;
+import jobshop.solvers.Mode;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 public class GreedySolver implements Solver {
 	private Mode mode;
+
 	public GreedySolver(Mode mode) {
 		this.mode = mode;
 	}
@@ -28,8 +30,7 @@ public class GreedySolver implements Solver {
 			return instance.durationFromTask(better)<instance.durationFromTask(worse);
 		}
 		else{
-			System.out.println("This should not happen ma friend");
-			return true;
+			throw new NullPointerException("Please set a valid mode for this solver");
 		}
 	}
 
