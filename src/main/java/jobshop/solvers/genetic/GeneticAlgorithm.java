@@ -39,7 +39,6 @@ public abstract class GeneticAlgorithm<I> {
 	I compute(int populationSize, double mutationRate, long deadline){
 		ArrayList<I> candidates = new ArrayList<>();
 		while(System.currentTimeMillis()<deadline) {
-			//System.out.println("Restart");
 			ArrayList<I> population = new ArrayList<>();
 			populator.populate(population,populationSize);
 			this.mutator.setMutationRate(mutationRate);
@@ -52,7 +51,6 @@ public abstract class GeneticAlgorithm<I> {
 				if (eval > best) {
 					best = eval;
 					candidates.add(candidate);
-					//System.out.println("New best " + best + " found at iteration " + iter + " " + (deadline - System.currentTimeMillis()) + "ms");
 					iter = 0;
 				} else {
 					iter++;
@@ -61,7 +59,6 @@ public abstract class GeneticAlgorithm<I> {
 				selector.select(evaluator, mutator, crosser, population, nextPopulation, population.size());
 				population = nextPopulation;
 			}
-
 		}
 		evaluator.sort(candidates);
 		for (I i : candidates) {

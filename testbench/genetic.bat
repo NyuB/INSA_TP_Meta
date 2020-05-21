@@ -1,0 +1,1 @@
+java -jar build/libs/JSP.jar --timeout 1 --solver rlrpt descent geneticJ --genparams mr=0.5 sr=0.75 ps=50 --instance ft06 ft10 ft20 la01 la02 la03 la04 la05 la06 la07 la08 la09 la20 la21 la22 la23 la24 la25 la26 la27 la28 la29 la40 orb10 swv10 ta30 ta40 ta50 ta60 yn3
