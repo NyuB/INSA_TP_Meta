@@ -1,0 +1,1 @@
+java -jar build/libs/JSP.jar --timeout 1200 --solver spt --taboo 10 --instance ta40

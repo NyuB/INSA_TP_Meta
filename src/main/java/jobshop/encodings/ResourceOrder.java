@@ -3,6 +3,7 @@ package jobshop.encodings;
 import jobshop.Encoding;
 import jobshop.Instance;
 import jobshop.Schedule;
+import jobshop.utils.Combinatory;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,12 @@ public class ResourceOrder extends Encoding {
 		this.order = new Task[instance.numMachines][instance.numJobs];
 	}
 
+	/**
+	 * Append the task to the first available slot for this machine in the planning
+	 * Warning : no verification is made to ensure the task belongs to the given machine
+	 * @param task the VALID task to append to the planning
+	 * @param machine the machine concerned by this VALID task
+	 */
 	public void insertTask(Task task,int machine){
 		int t = 0;
 		while(t<this.instance.numJobs && this.order[machine][t] != null){
@@ -122,6 +129,14 @@ public class ResourceOrder extends Encoding {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public long researchSpaceEval() {
+		long nF = Combinatory.factorial(instance.numJobs);
+		long res=1;
+		for(int i=0;i<instance.numMachines;i++)res*=nF;
+		return res;
 	}
 
 	public ResourceOrder copy(){

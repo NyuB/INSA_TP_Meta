@@ -9,6 +9,7 @@ import java.util.List;
 
 
 import jobshop.solvers.*;
+import jobshop.solvers.descent.BasicDescentSolver;
 import jobshop.solvers.descent.DescentSolver;
 import jobshop.solvers.descent.TabooSolver;
 import jobshop.solvers.genetic.GeneticSolver;
@@ -49,10 +50,12 @@ public class Main {
 
         solvers.put("rspt", new RandomizedGreedySolver(Mode.SPT));
         solvers.put("rlpt", new RandomizedGreedySolver(Mode.LPT));
+        solvers.put("rsrpt", new RandomizedGreedySolver(Mode.SRPT));
+        solvers.put("rlrpt", new RandomizedGreedySolver(Mode.LRPT));
 
-        solvers.put("grad", new DescentSolver(false));
+        solvers.put("descent", new BasicDescentSolver(false));
         solvers.put("taboo", new TabooSolver(false,10));
-        solvers.put("r_grad", new DescentSolver(true));
+        solvers.put("r_grad", new BasicDescentSolver(true));
         solvers.put("r_taboo", new TabooSolver(true,10));
 
 
@@ -84,6 +87,14 @@ public class Main {
                 .nargs("+")
                 .required(false)
                 .help("Parameters for genetic algorithms, format name=value, space separated if more than one");
+        parser.addArgument("--tabooSize")
+                .setDefault(10)
+                .help("Number of iterations before enabling a swap to be explored again in a taboo search");
+        parser.addArgument("--taboo")
+                .nargs("+")
+                .required(false)
+                .help("Instance(s) to solve (space separated if more than one)");
+
         Namespace ns = null;
         try {
             ns = parser.parseArgs(args);
@@ -96,6 +107,11 @@ public class Main {
         PrintStream output = System.out;
 
         long solveTimeMs = ns.getLong("timeout") * 1000;
+        int tabooSize = ns.getInt("tabooSize");
+        solvers.put("taboo", new TabooSolver(false,tabooSize));
+        solvers.put("r_taboo", new TabooSolver(true,tabooSize));
+
+
 
         List<String> solversToTest = ns.getList("solver");
         for(String solverName : solversToTest) {
@@ -112,6 +128,23 @@ public class Main {
                 System.err.println("ERROR: instance \"" + instanceName + "\" is not avalaible.");
                 System.err.println("       available instances: " + Arrays.toString(BestKnownResult.instances));
                 System.exit(1);
+            }
+        }
+        List<String> taboos = ns.<String>getList("taboo");
+        if(taboos != null) {
+            for (String size : taboos) {
+                if (!size.equals("")) {
+                    if (size.charAt(0) != 'r') {
+                        String name = "taboo(" + size + ")";
+                        solvers.put(name, new TabooSolver(false, Integer.valueOf(size)));
+                        solversToTest.add(name);
+                    } else {
+                        String name = "r_taboo(" + size.substring(1) + ")";
+                        solvers.put(name, new TabooSolver(true, Integer.valueOf(size.substring(1))));
+                        solversToTest.add(name);
+                    }
+                }
+
             }
         }
         List<String> genParameters = ns.getList("genparams");

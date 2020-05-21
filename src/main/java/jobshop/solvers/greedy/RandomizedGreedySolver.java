@@ -23,6 +23,10 @@ public class RandomizedGreedySolver implements Solver {
 		return (this.mode==Mode.SPT || this.mode==Mode.LPT)?instance.duration(candidate):instance.durationFromTask(candidate);
 	}
 
+	/**
+	 * @param instance The JobShop problem to solve
+	 * @return A randomly generated solution to the given problem. While random, the task order is guided by the heuristic assigned to the solver
+	 */
 	public ResourceOrder randomGreedySolution(Instance instance){
 		ResourceOrder resourceOrder = new ResourceOrder(instance);
 		ArrayList<Task> taskQ = new ArrayList<>();//Available tasks sorted by earliest start time possible
@@ -101,7 +105,7 @@ public class RandomizedGreedySolver implements Solver {
 		ResourceOrder result = null;
 
 		while (result == null || System.currentTimeMillis()<deadline) {
-			ResourceOrder resourceOrder = randomGreedySolution(instance);
+			ResourceOrder resourceOrder = randomGreedySolution(instance);//Generate a random solution guided by the given heuristic
 			if(result == null || resourceOrder.toSchedule().makespan()<result.toSchedule().makespan()){
 				result = resourceOrder;
 			}

@@ -6,7 +6,6 @@ import jobshop.encodings.JobNumbers;
 import jobshop.solvers.descent.TabooSolver;
 import jobshop.solvers.greedy.GreedySolver;
 import jobshop.solvers.Mode;
-import jobshop.solvers.greedy.RandomizedGreedySolver;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -14,5 +14,7 @@ public abstract class Encoding {
 
     public abstract Schedule toSchedule();
 
+    public abstract long researchSpaceEval();
+
 
 }

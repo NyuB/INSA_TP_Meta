@@ -54,11 +54,12 @@ public class TabooSolver extends DescentSolver {
 		ResourceOrder next = currentPoint;
 		this.nbIterations++;
 		Swap elected = null;
+
 		for(Swap s : neighborhood){
-			if(nbIterations>taboo(s)) {
-				ResourceOrder aux = currentPoint.copy();
-				s.applyOn(aux);
-				int score = aux.toSchedule().makespan();
+			ResourceOrder aux = currentPoint.copy();
+			s.applyOn(aux);
+			int score = aux.toSchedule().makespan();
+			if(score<bestScore || nbIterations>taboo(s)) {//the taboo method returns the minimal iteration number required to choose this swap again
 				if (score < min) {
 					next = aux;
 					min = score;
@@ -69,10 +70,9 @@ public class TabooSolver extends DescentSolver {
 					}
 				}
 			}
-
 		}
 		if(elected!=null){
-			tabboInc(elected);
+			tabboInc(elected);//the tabooInc method reset the minimal iteration number required to choose this swap again
 			currentPoint = next;
 			return true;
 		}

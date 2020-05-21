@@ -1,8 +1,10 @@
 package jobshop.encodings;
 
+import com.sun.javafx.css.Combinator;
 import jobshop.Encoding;
 import jobshop.Instance;
 import jobshop.Schedule;
+import jobshop.utils.Combinatory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,44 +139,14 @@ public class JobNumbers extends Encoding {
 		return individual;
 	}
 
-	public String toIdentifier(){
-		StringBuilder sb = new StringBuilder();
-		for(int j:this.jobs){
-			sb.append(j);
+	@Override
+	public long researchSpaceEval() {
+		long nmF = Combinatory.factorial(instance.numJobs*instance.numMachines);
+		long mF = Combinatory.factorial(instance.numMachines);
+		long mFn = 1;
+		for(int i=0;i<instance.numJobs;i++){
+			mFn*=mF;
 		}
-		return sb.toString();
+		return nmF/mFn;
 	}
-
-	/**
-	 * For "explorer type" solvers(gradient,taboo...)
-	 * @return A list corresponding to all possible exchange between two jobs in the representation
-	 */
-	public List<JobNumbers> generateAllSwaps(){
-		ArrayList<JobNumbers> res = new ArrayList<>();
-		for(int a=0;a<this.instance.totalOps()-1;a++){
-			for(int b=a+1;b<instance.totalOps();b++){
-				if(this.jobs[a]!=this.jobs[b]) {
-					JobNumbers clone = this.clone();
-					clone.jobs[a] = this.jobs[b];
-					clone.jobs[b] = this.jobs[a];
-					res.add(clone);
-				}
-			}
-		}
-		return res;
-	}
-
-
-	//TODO to optimize exhaustive search
-	public int currentMakespan(){
-		int res=0;
-		int[] tasks = new int[instance.numJobs];
-		for(int i=0;i<nextToSet;i++){
-			res+=instance.duration(jobs[i],tasks[jobs[i]]);
-			tasks[jobs[i]]++;
-		}
-		return res;
-	}
-
-
 }

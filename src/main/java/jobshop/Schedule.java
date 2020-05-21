@@ -2,6 +2,7 @@ package jobshop;
 
 
 import jobshop.encodings.Task;
+import jobshop.utils.Combinatory;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -151,6 +152,21 @@ public class Schedule {
         }
         assert isCriticalPath(path);
         return path;
+    }
+
+    public long researchSpaceEval() {
+        long dMax = 0;
+        long res=1;
+        for(int j = 0;j<times.length;j++){
+            for(int t=0;t<times[j].length;t++){
+                dMax+=pb.duration(j,t);
+            }
+        }
+        for(int i=0;i<pb.numJobs*pb.numTasks;i++){
+            res*=dMax;
+        }
+        return res;
+
     }
 
     public Schedule copy() {

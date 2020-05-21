@@ -1,2 +1,0 @@
-java -jar build/libs/JSP.jar --timeout 1 --solver est_lrpt grad taboo r_grad r_taboo --instance aaa1 ft06 ft10 ft20 la01 la02 la03 la04 la05 la06 la07 la08 la09
-::java -jar build/libs/JSP.jar --timeout 1 --solver grad taboo --instance la01

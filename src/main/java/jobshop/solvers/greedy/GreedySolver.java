@@ -50,7 +50,8 @@ public class GreedySolver implements Solver {
 			for (int i = 1; i < taskQ.size(); i++) {
 				Task item = taskQ.get(i);
 				int t = Integer.max(jobsTime[item.job], machinesTime[instance.machine(item)]);
-				if (t == t_min || (this.mode !=Mode.EST_SPT && this.mode!=Mode.EST_LPT && this.mode != Mode.EST_SRPT && this.mode != Mode.EST_LRPT)) {//When not in EST mode, starting time does not matter
+				//When not in EST mode, starting time does not impact selection
+				if (t == t_min || (this.mode !=Mode.EST_SPT && this.mode!=Mode.EST_LPT && this.mode != Mode.EST_SRPT && this.mode != Mode.EST_LRPT)) {
 					if (this.priority(item, next, instance)) {
 						next = item;
 						index = i;

@@ -13,11 +13,12 @@ import jobshop.solvers.greedy.RandomizedGreedySolver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DescentSolver implements Solver {
-	private boolean loopWithRandomSeed = false;
+public abstract class DescentSolver implements Solver {
 	protected ResourceOrder currentPoint;
 	protected ResourceOrder bestCandidate;
 	protected int bestScore;
+	private boolean loopWithRandomSeed;
+
 
 	public DescentSolver(boolean loopWithRandomSeed) {
 		this.loopWithRandomSeed = loopWithRandomSeed;
@@ -93,6 +94,9 @@ public class DescentSolver implements Solver {
 		}
 	}
 
+	/**
+	 * @return the neighbourhood of the current point
+	 */
 	protected List<Swap> scan() {
 		List<Block> blocks = blocksOfCriticalPath(currentPoint);
 		List<Swap> neighborhood = new ArrayList<>();
@@ -102,28 +106,7 @@ public class DescentSolver implements Solver {
 		return neighborhood;
 	}
 
-	protected boolean update(List<Swap> neighborhood) {
-		Swap elected = null;
-		ResourceOrder next = currentPoint;
-		for (Swap s : neighborhood) {
-			ResourceOrder aux = currentPoint.copy();
-			s.applyOn(aux);
-			int score = aux.toSchedule().makespan();
-			if (score < bestScore) {
-				bestScore = score;
-				bestCandidate = aux;
-				next = aux;
-				elected =s;
-			}
-		}
-		if(elected!=null){
-			currentPoint = next;
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+	protected abstract boolean update(List<Swap> neighborhood) ;
 
 	@Override
 	public Result solve(Instance instance, long deadline) {
