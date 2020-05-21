@@ -5,11 +5,11 @@ Initialized from the lesson template
 
 Implemented Solvers (by default, Random and Basic solvers were available):
 
-- Greedy SPT
-- Greedy LPT
+- Greedy SPT/LPT/SRPT/LRPT with EST and Randomized variations.
+-Descent Classic/Taboo with Randomized variations
 - Exhaustive (only working on very small instances)
 - Genetic with ResourceNumber representation (not efficient)
-- Genetic with JobNumbers representation and seeding with spt/lpt (better results, still work in progress)
+- Genetic with JobNumbers representation and seeding with est_lrpt/taboo (better results, still work in progress)
 
 ## Compile
 
