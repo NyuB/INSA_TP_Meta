@@ -11,7 +11,7 @@ Implemented Solvers (by default, Random and Basic solvers were available):
 - Genetic with ResourceNumber representation (not efficient)
 - Genetic with JobNumbers representation and seeding with est_lrpt/taboo (better results, still work in progress)
 
-Additionnal solvers :
+Additionnal solvers names :
 ```
 spt lpt srpt lrpt est_spt est_lpt est_srpt est_rtp # greedy solvers
 rspt rlpt rsrpt rlrpt # randomized greedy solvers
@@ -21,7 +21,7 @@ geneticJ # genetic algorithm
 
 Additionnal options :
 ```
---taboo 5 10 15 ...(as many numbers as desired) #taboo solvers to be tested with the given taboo queue sizes, here 5 10 and 15
+--taboo 5 10 15 ...(as many numbers as desired) # add taboo solvers to the running set with the given taboo queue sizes, here 5 10 and 15
 --genparams sr=0.5 mr=0.75 ps=50 #parameters of the genetic algorithm if choosen, sr : seed rate, mr : mutation rate ps:population size
 ```
 
